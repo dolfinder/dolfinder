@@ -1,0 +1,247 @@
+/* ===== 전체 배경 및 텍스트 ===== */
+body {
+    background-color: #1b263b;
+    color: #f8f9fa;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    padding: 1rem;
+    text-align: center;
+    background-color: #1b263b;
+  }
+  
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fca311;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    margin: 0;
+    padding: 0.5rem;
+    letter-spacing: 1px;
+  }
+  
+  /* ===== 필터 컨트롤 바 ===== */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    /* 배경 없음 */
+  }
+  
+  /* 공통 필터 요소 */
+  .controls input,
+  .controls select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #c7943e;
+    border-radius: 20px;
+    background-color: #dac79c;
+    color: #2b1e0f;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    min-width: 160px;
+    transition: all 0.3s ease;
+  }
+  
+  .controls input::placeholder {
+    color: #5a4632;
+  }
+  
+  .controls input:focus,
+  .controls select:focus {
+    outline: none;
+    border-color: #fbd74f;
+    box-shadow: 0 0 6px #fbd74f;
+  }
+  
+  /* ===== 직업 탭 버튼 ===== */
+  .job-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .job-tabs button {
+    background-color: #dac79c;
+    color: #2b1e0f;
+    border: 2px solid #c7943e;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.6),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+      0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+  }
+  
+  .job-tabs button:hover {
+    border-color: #fbd74f;
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.7),
+      0 0 8px #fbd74f;
+    transform: translateY(-2px);
+  }
+  
+  .job-tabs button.selected {
+    background-color: #fbd74f;
+    color: #1b263b;
+    font-weight: 900;
+    border-color: #ffd700;
+  }
+  
+  /* ===== 카드 그리드 ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    justify-items: center;
+  }
+  
+  .card {
+    background: #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+    max-width: 260px;
+  }
+  
+  .card:hover {
+    transform: scale(1.03);
+  }
+  
+  .card img {
+    width: 100%;
+    display: block;
+  }
+  
+  /* 카드 이름 디자인 */
+  .card-title {
+    padding: 0.6rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fca311;
+    background-color: #1e1e1e;
+    border-top: 1px solid #444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  /* 카드 희귀도 강조 */
+  .card.LEGENDARY {
+    border: 3px solid #fca311;
+  }
+  
+  .card.EPIC {
+    border: 3px solid #e63946;
+  }
+  
+  .card.RARE {
+    border: 3px solid #2a9d8f;
+  }
+  
+  /* ===== 모달 ===== */
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal.hidden {
+    display: none;
+  }
+  
+  .modal-content {
+    background-color: #222;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 900px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* 카드 미리보기: 좌우 정렬 */
+  .card-preview {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    perspective: 800px;
+    position: relative;
+  }
+  
+  .card-preview img {
+    width: 400px;
+    max-width: 100%;
+    border-radius: 12px;
+    transition: transform 0.15s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+  }
+  
+  .card-preview::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.25), transparent 60%);
+    border-radius: 12px;
+    pointer-events: none;
+    transition: background 0.2s ease;
+  }
+  
+  /* 카드 설명 영역 */
+  .card-details {
+    flex: 1;
+    min-width: 240px;
+    max-width: 320px;
+    color: #eee;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: left;
+  }
+  
+  .card-details h2 {
+    margin-bottom: 0.5rem;
+    color: #ffd700;
+  }
+  
+  .card-details p {
+    margin: 0.3rem 0;
+  }
+  
+  .card-details .flavor {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #aaa;
+  }
+  
