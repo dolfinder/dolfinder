@@ -99,48 +99,33 @@ body {
   }
   
   /* ===== 카드 그리드 ===== */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem;
-    padding: 1.5rem;
-    justify-items: center;
-  }
+ .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem; /* 카드 사이 간격 */
+  padding: 1.5rem;
+  justify-items: center; /* 카드들을 가운데 정렬 */
+}
   
-  .card {
-    background: #2a2a2a;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    transition: transform 0.2s ease;
-    max-width: 260px;
-  }
+  
   
   .card:hover {
     transform: scale(1.03);
   }
   
   .card img {
-    width: 100%;
-    display: block;
-  }
+  width: 100%;
+  max-width: 200px;
+  display: block;
+  transition: transform 0.2s ease;
+}
   
-  /* 카드 이름 디자인 */
-  .card-title {
-    padding: 0.6rem;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #fca311;
-    background-color: #1e1e1e;
-    border-top: 1px solid #444;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
+  
   
   /* 카드 희귀도 강조 */
   .card.LEGENDARY {
-    border: 3px solid #fca311;
+      position: relative;
+
   }
   
   .card.EPIC {
@@ -198,15 +183,14 @@ body {
     position: relative;
   }
   
-  .card-preview img {
-    width: 400px;
-    max-width: 100%;
-    border-radius: 12px;
-    transition: transform 0.15s ease;
-    transform-style: preserve-3d;
-    will-change: transform;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
-  }
+ .card-preview img {
+  object-fit: contain;
+  image-rendering: auto;
+  background-color: transparent;
+  transform: scale(1.1); /* or larger */
+  margin: -20px;         /* 이미지 바깥 여백 없애기 */
+  max-width: 420px;
+}
   
   .card-preview::before {
     content: '';
@@ -245,3 +229,191 @@ body {
     color: #aaa;
   }
   
+ @keyframes legendaryGlow {
+  0% {
+    box-shadow: 0 0 4px 0px #fca311;
+  }
+  50% {
+    box-shadow: 0 0 10px 2px #ffd900bb;
+  }
+  100% {
+    box-shadow: 0 0 4px 0px #fca311;
+  }
+}
+
+
+
+
+
+
+.card.LEGENDARY::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: -8px;
+  right: -8px; bottom: -8px;
+  background: radial-gradient(circle, rgba(255,215,0,0.8) 0%, transparent 70%);
+  border-radius: 16px;
+  z-index: 0;
+   filter: blur(8px);  
+  opacity: 1;       
+  
+  
+
+}
+.modal-content.FREE {
+  background: #2f2f2f;
+}
+
+.modal-content.COMMON {
+  background: #2b2b2b;
+}
+
+.modal-content.RARE {
+  background: linear-gradient(135deg, #102a43, #1c3d5a);
+}
+
+.modal-content.EPIC {
+  background: radial-gradient(circle, #2b0f3a, #11001c);
+}
+
+.modal-content.LEGENDARY {
+  background: linear-gradient(135deg, #4d3902, #2e1e00);
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.07) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.07) 25%, transparent 25%);
+  background-size: 40px 40px;
+  background-blend-mode: overlay;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+.modal-content.LEGENDARY h2 {
+  font-family: 'Cinzel', serif;
+  color: gold;
+  text-shadow: 1px 1px 6px rgba(255, 215, 0, 0.8);
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+.modal-content.EPIC {
+  background: linear-gradient(135deg, #1a0e24, #12061a); /* 어두운 내부 */
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  box-shadow:
+    0 0 16px rgba(190, 130, 255, 0.3), /* 연보라 glow */
+    0 0 32px rgba(200, 150, 255, 0.15) inset;
+}IC .card-details {
+  box-shadow: 0 0 20px rgba(150, 50, 200, 0.15);
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+@keyframes epicPulseSubtle {
+  0% {
+    box-shadow: 0 0 10px rgba(180, 70, 200, 0.1), 0 0 16px rgba(100, 50, 150, 0.05) inset;
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(180, 70, 200, 0.25), 0 0 40px rgba(100, 50, 150, 0.1) inset;
+  }
+}
+.modal-content.EPIC .card-details p {
+  color: #d5baff;
+}
+.modal-content.EPIC .card-details strong {
+  color: #f0c8ff;
+}
+.modal-content.EPIC .card-details .flavor {
+  color: #b590ff;
+}
+.modal-content.EPIC h2 {
+  font-family: 'UnifrakturCook', cursive;
+  color: #e0c8ff;
+  text-shadow:
+    0 0 3px rgba(200, 150, 255, 0.3),
+    0 0 5px rgba(255, 255, 255, 0.1);
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+
+}
+.modal-content.RARE {
+  background: linear-gradient(135deg, #102a43, #1b3b5a); /* 차분한 파랑 배경 */
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  box-shadow:
+    0 0 14px rgba(72, 149, 239, 0.15),
+    0 0 30px rgba(72, 149, 239, 0.08) inset;
+}
+.modal-content.RARE::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 24px 8px rgba(72, 149, 239, 0.07);
+  pointer-events: none;
+  z-index: -1;
+}
+.modal-content.RARE h2 {
+  font-family: 'Cinzel', serif;
+  color: #7cc6fe;
+  text-shadow: 0 0 4px rgba(124, 198, 254, 0.3);
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.modal-content.RARE .card-details {
+  color: #d4eafc;
+}
+
+.modal-content.RARE .card-details .flavor {
+  color: #a5c9e9;
+}
+.rarity-desc-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.03);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.03);
+}
+
+/* 공통 구성 */
+.rarity-badge {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.rarity-short {
+  font-style: italic;
+  color: #ccc;
+  margin-bottom: 0.3rem;
+}
+
+.rarity-long {
+  white-space: pre-line;
+  color: #bbb;
+  font-size: 0.85rem;
+}
+
+/* ===== 등급별 포인트 컬러 적용 ===== */
+.rarity-desc-box.COMMON {
+  border: 1px solid #888;
+}
+
+.rarity-desc-box.RARE {
+  border: 1px solid #2a9d8f;
+  background-color: rgba(42, 157, 143, 0.05);
+}
+
+.rarity-desc-box.EPIC {
+  border: 1px solid #b197fc;
+  background-color: rgba(180, 100, 255, 0.05);
+}
+
+.rarity-desc-box.LEGENDARY {
+  border: 1px solid gold;
+  background-color: rgba(255, 215, 0, 0.04);
+}
+
