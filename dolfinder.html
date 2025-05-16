@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>  
+  <meta charset="UTF-8">
+  <title>dolfider</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <header>
+    
+  </header>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="카드 이름 검색...">
+    <select id="rarityFilter">
+      <option value="">-- 등급 선택 --</option>
+      <option value="FREE">무료</option>
+      <option value="COMMON">일반</option>
+      <option value="RARE">희귀</option>
+      <option value="EPIC">영웅</option>
+      <option value="LEGENDARY">전설</option>
+    </select>
+    <select id="costFilter">
+      <option value="">-- 비용 선택 --</option>
+      <option value="0">0 마나</option>
+      <option value="1">1 마나</option>
+      <option value="2">2 마나</option>
+      <option value="3">3 마나</option>
+      <option value="4">4 마나</option>
+      <option value="5">5 마나</option>
+      <option value="6">6 마나</option>
+      <option value="7">7 마나 이상</option>
+    </select>
+    <select id="typeFilter">
+      <option value="">-- 종류 선택 --</option>
+      <option value="MINION">하수인</option>
+      <option value="SPELL">주문</option>
+      <option value="WEAPON">무기</option>
+      <option value="HERO">영웅</option>
+      <option value="HERO_POWER">영웅 능력</option>
+    </select>
+  </div>
+
+  <nav class="job-tabs">
+    <button>드루 이드</button>
+    <button>마법사</button>
+    <button>전사</button>
+    <button>사제</button>
+    <button>도적</button>
+    <button>성기사</button>
+    <button>흑마법사</button>
+    <button>사냥꾼</button>
+    <button>주술사</button>
+    <button>중립</button>
+  </nav>
+
+  <section class="card-grid" id="cardGrid"></section>
+
+  <div id="cardModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-button" id="modalClose">&times;</span>
+      <div class="card-preview" id="modalPreview"></div>
+    </div>
+  </div>  
+
+  <script src="dolfindermain.js"></script>
+</body>
+</html>
