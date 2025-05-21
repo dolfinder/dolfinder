@@ -68,6 +68,10 @@ function renderCards(cards) {
     cardEl.appendChild(img);
     cardGrid.appendChild(cardEl);
   });
+
+
+
+
 }
 
 function showCardModal(card) {
@@ -168,7 +172,7 @@ function showCardModal(card) {
     img.style.transform = 'scale(1.1) rotateX(0deg) rotateY(0deg)';
   });
 }
-
+  
 
 
 
