@@ -14,24 +14,55 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+ /* 기존 .top-nav는 유지 */
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+/* 로고 정렬 */
 .nav-left .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+/* 텍스트 수직 가운데 정렬 */
+.logo-text {
   color: #fff;
   font-weight: bold;
   font-size: 1.1rem;
+  line-height: 1; /* 정렬 보정 */
 }
 
-.nav-right .nav-link {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 0.4rem 1rem;
-  background-color: #fca311;
-  border-radius: 20px;
-  transition: background 0.2s ease;
+.nav-right {
+  margin-left: auto; /* 덱 추천을 오른쪽 끝으로 보냄 */
+  display: flex;
+  align-items: center;
+  padding-left: 1rem; /* 로고와 덱 추천 버튼 사이 여백 */
 }
+
+ .nav-right .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    background-color: #fca311;
+    border-radius: 20px;
+    transition: background 0.2s ease;
+  }
 
 .nav-right .nav-link:hover {
   background-color: #ffb733;
+
+
 }
 
 body {
