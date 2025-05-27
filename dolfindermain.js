@@ -1,3 +1,4 @@
+// DOM 요소 선택
 const cardGrid = document.getElementById('cardGrid');
 const jobButtons = document.querySelectorAll('.job-tabs button');
 const modal = document.getElementById('cardModal');
@@ -13,30 +14,12 @@ let allCards = [];
 let selectedJob = null;
 
 const classMap = {
-  '드루 이드': 'DRUID',
-  '마법사': 'MAGE',
-  '전사': 'WARRIOR',
-  '사제': 'PRIEST',
-  '도적': 'ROGUE',
-  '성기사': 'PALADIN',
-  '흑마법사': 'WARLOCK',
-  '사냥꾼': 'HUNTER',
-  '주술사': 'SHAMAN',
-  '중립': 'NEUTRAL'
+  '드루 이드': 'DRUID', '마법사': 'MAGE', '전사': 'WARRIOR', '사제': 'PRIEST',
+  '도적': 'ROGUE', '성기사': 'PALADIN', '흑마법사': 'WARLOCK', '사냥꾼': 'HUNTER',
+  '주술사': 'SHAMAN', '중립': 'NEUTRAL'
 };
 
-const classMapReversed = {
-  'DRUID': '드루 이드',
-  'MAGE': '마법사',
-  'WARRIOR': '전사',
-  'PRIEST': '사제',
-  'ROGUE': '도적',
-  'PALADIN': '성기사',
-  'WARLOCK': '흑마법사',
-  'HUNTER': '사냥꾼',
-  'SHAMAN': '주술사',
-  'NEUTRAL': '중립'
-};
+const classMapReversed = Object.fromEntries(Object.entries(classMap).map(([k, v]) => [v, k]));
 
 fetch('https://api.hearthstonejson.com/v1/latest/koKR/cards.collectible.json')
   .then(res => res.json())
@@ -47,31 +30,30 @@ fetch('https://api.hearthstonejson.com/v1/latest/koKR/cards.collectible.json')
 
 function renderCards(cards) {
   cardGrid.innerHTML = '';
+
   cards.forEach(card => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-wrapper';
+    if (card.rarity === 'LEGENDARY') {
+      wrapper.classList.add('LEGENDARY');
+    }
+
     const cardEl = document.createElement('div');
     cardEl.className = 'card';
-
-    // rarity에 따라 클래스 추가 (전설 카드에 LEGENDARY 클래스 붙이기)
-    if (card.rarity === 'LEGENDARY') {
-      cardEl.classList.add('LEGENDARY');
-    }
 
     const img = document.createElement('img');
     img.loading = 'lazy';
     img.src = `https://art.hearthstonejson.com/v1/render/latest/koKR/256x/${card.id}.png`;
     img.alt = card.name;
 
+    cardEl.appendChild(img);
     cardEl.addEventListener("click", () => {
       showCardModal(card);
     });
 
-    cardEl.appendChild(img);
-    cardGrid.appendChild(cardEl);
+    wrapper.appendChild(cardEl);
+    cardGrid.appendChild(wrapper);
   });
-
-
-
-
 }
 
 function showCardModal(card) {
@@ -79,11 +61,7 @@ function showCardModal(card) {
   const className = classMapReversed[card.cardClass] || card.cardClass;
 
   const rarityMap = {
-    'FREE': '무료',
-    'COMMON': '일반',
-    'RARE': '희귀',
-    'EPIC': '영웅',
-    'LEGENDARY': '전설'
+    'FREE': '무료', 'COMMON': '일반', 'RARE': '희귀', 'EPIC': '영웅', 'LEGENDARY': '전설'
   };
 
   const rarityDescriptions = {
@@ -113,24 +91,42 @@ function showCardModal(card) {
   const rarityKorean = rarityMap[rarity] || rarity;
   const desc = rarityDescriptions[rarity];
 
-  // 모달 열기
   modal.classList.remove('hidden');
 
-  // .modal-content에 등급 클래스 적용
   const modalContent = modal.querySelector('.modal-content');
   modalContent.classList.remove('FREE', 'COMMON', 'RARE', 'EPIC', 'LEGENDARY');
-  if (rarity) {
-    modalContent.classList.add(rarity);
-  }
+  if (rarity) modalContent.classList.add(rarity);
 
   const wrapper = document.createElement('div');
   wrapper.className = `card-image-wrapper ${rarity}`;
+  wrapper.style.setProperty('--mouse-x', `50%`);
+  wrapper.style.setProperty('--mouse-y', `50%`);
 
   const img = document.createElement('img');
   img.src = imageUrl;
   img.alt = card.name;
 
   wrapper.appendChild(img);
+
+  // 회전 및 광원 효과: wrapper 기준으로 처리
+  wrapper.addEventListener('mousemove', (e) => {
+    const bounds = wrapper.getBoundingClientRect();
+    const x = e.clientX - bounds.left;
+    const y = e.clientY - bounds.top;
+
+    const rotateY = (x - bounds.width / 2) / 8;
+    const rotateX = -(y - bounds.height / 2) / 8;
+
+    img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    wrapper.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
+    wrapper.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
+  });
+
+  wrapper.addEventListener('mouseleave', () => {
+    img.style.transform = 'scale(1.1) rotateX(0deg) rotateY(0deg)';
+    wrapper.style.setProperty('--mouse-x', `50%`);
+    wrapper.style.setProperty('--mouse-y', `50%`);
+  });
 
   const infoHTML = `
     <div class="card-details">
@@ -142,7 +138,7 @@ function showCardModal(card) {
       <p><strong>희귀도:</strong> ${rarityKorean}</p>
       ${card.text ? `<p><strong>효과:</strong> ${card.text}</p>` : ""}
       ${card.set ? `<p><strong>세트:</strong> ${card.set}</p>` : ""}
-      ${card.flavor ? `<p class="flavor">"${card.flavor}"</p>` : ""}
+      ${card.flavor ? `<p class="flavor">\"${card.flavor}\"</p>` : ""}
       ${desc ? `
         <div class="rarity-desc-box ${rarity}">
           <div class="rarity-badge">${desc.badge}</div>
@@ -155,26 +151,7 @@ function showCardModal(card) {
   previewContainer.innerHTML = '';
   previewContainer.appendChild(wrapper);
   previewContainer.insertAdjacentHTML('beforeend', infoHTML);
-
-  // 카드 회전 효과
-  wrapper.addEventListener('mousemove', (e) => {
-    const bounds = wrapper.getBoundingClientRect();
-    const x = e.clientX - bounds.left;
-    const y = e.clientY - bounds.top;
-
-    const rotateY = (x - bounds.width / 2) / 20;
-    const rotateX = -(y - bounds.height / 2) / 20;
-
-    img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
-
-  wrapper.addEventListener('mouseleave', () => {
-    img.style.transform = 'scale(1.1) rotateX(0deg) rotateY(0deg)';
-  });
 }
-  
-
-
 
 function applyFilters() {
   const keyword = searchInput.value.trim().toLowerCase();
@@ -218,28 +195,3 @@ jobButtons.forEach(btn => {
 modalClose.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
-
-previewContainer.addEventListener('mousemove', function (e) {
-  const card = previewContainer.querySelector('img');
-  const bounds = previewContainer.getBoundingClientRect();
-  const x = e.clientX - bounds.left;
-  const y = e.clientY - bounds.top;
-
-  const centerX = bounds.width / 2;
-  const centerY = bounds.height / 2;
-
-  const rotateY = (x - centerX) / 20;
-  const rotateX = -(y - centerY) / 20;
-
-  card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  previewContainer.style.setProperty('--mouse-x', `${(x / bounds.width) * 100}%`);
-  previewContainer.style.setProperty('--mouse-y', `${(y / bounds.height) * 100}%`);
-});
-
-previewContainer.addEventListener('mouseleave', function () {
-  const card = previewContainer.querySelector('img');
-  card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-  previewContainer.style.setProperty('--mouse-x', `50%`);
-  previewContainer.style.setProperty('--mouse-y', `50%`);
-});
-
