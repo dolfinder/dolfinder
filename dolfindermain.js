@@ -137,7 +137,7 @@ function showCardModal(card) {
       ${['MINION', 'WEAPON'].includes(card.type) ? `<p><strong>공격력 / 체력:</strong> ${card.attack} / ${card.health}</p>` : ""}
       <p><strong>희귀도:</strong> ${rarityKorean}</p>
       ${card.text ? `<p><strong>효과:</strong> ${card.text}</p>` : ""}
-      ${card.set ? `<p><strong>세트:</strong> ${card.set}</p>` : ""}
+
       ${card.flavor ? `<p class="flavor">\"${card.flavor}\"</p>` : ""}
       ${desc ? `
         <div class="rarity-desc-box ${rarity}">
