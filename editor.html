@@ -3,7 +3,8 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>하스스톤 덱 빌더</title>
+	<title>dolfinder</title>
+	<link rel="icon" type="image/png" href="dolfindericon.png">
 	<style>
 		body {
 			font-family: sans-serif;
@@ -11,17 +12,103 @@
 			color: #e0e0e0;
 			margin: 0;
 			padding: 20px;
+			padding-top: 68px;
 		}
 
-		h1 {
-			text-align: center;
-			color: #ffd700;
+		.top-nav {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 48px;
+			background-color: #1c2e2b;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 1.5rem;
+			z-index: 1000;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		}
+
+		.nav-left {
+			display: flex;
+			align-items: center;
+		}
+
+		.nav-left .logo {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.logo-img {
+			height: 32px;
+			width: auto;
+			display: block;
+		}
+
+		.logo-text {
+			color: #fff;
+			font-weight: bold;
+			font-size: 1.1rem;
+			line-height: 1;
+		}
+
+		.nav-right {
+			margin-left: auto;
+			display: flex;
+			align-items: center;
+			padding-left: 1rem;
+		}
+
+		.nav-right .nav-link {
+			color: #fff;
+			text-decoration: none;
+			font-weight: 600;
+			padding: 0.4rem 1rem;
+			background-color: #fca311;
+			border-radius: 20px;
+			transition: background 0.2s ease;
+		}
+
+		.nav-right .nav-link:hover {
+			background-color: #ffb733;
+		}
+
+		.filter-group {
+			display: flex;
+			gap: 10px;
+			margin-top: 60px;
+			margin-bottom: 20px;
+		}
+
+		.filter-group input,
+		.filter-group select {
+			background-color: #d1bb92;
+			color: #333;
+			border: 2px solid #b4955a;
+			border-radius: 20px;
+			padding: 8px 14px;
+			font-size: 14px;
+			font-weight: bold;
+			box-shadow: 0 0 0 2px transparent;
+			transition: box-shadow 0.3s ease, background-color 0.2s ease;
+		}
+
+		.filter-group select:focus,
+		.filter-group input:focus {
+			outline: none;
+			box-shadow: 0 0 5px 2px #fcd34d;
+		}
+
+		.filter-group option {
+			background-color: #f0e2c4;
+			color: #000;
 		}
 
 		#mainContainer {
 			display: flex;
 			gap: 20px;
-			margin-top: 20px;
 		}
 
 		#leftPanel {
@@ -95,71 +182,52 @@
 		#deckList li {
 			padding: 6px 0;
 			border-bottom: 1px solid #555;
-		}
-
-		select {
-			background-color: #2e2e2e;
-			color: #fff;
-			border: 1px solid #555;
-			padding: 5px;
-			border-radius: 4px;
-		}
-
-		label {
-			font-weight: bold;
-		}
-
-		button {
-			background-color: #444;
-			color: #fff;
-			border: none;
-			padding: 6px 10px;
-			margin-right: 5px;
-			border-radius: 5px;
 			cursor: pointer;
-		}
-
-		button:hover {
-			background-color: #666;
 		}
 	</style>
 </head>
 
 <body>
-	<h1>하스스톤 덱 빌더</h1>
+	<nav class="top-nav">
+		<div class="nav-left">
+			<div class="logo">
+				<img src="dolfindericon.png" alt="DOL Finder 로고" class="logo-img">
+				<span class="logo-text">DOL Finder</span>
+			</div>
+			<div class="nav-right">
+				<a href="dolfinder.html" class="nav-link">카드 라이브러리</a>
+			</div>
+		</div>
+	</nav>
 
-	<label for="classSelect">직업 선택: </label>
-	<select id="classSelect">
-		<option value="MAGE">마법사</option>
-		<option value="WARRIOR">전사</option>
-		<option value="ROGUE">도적</option>
-		<option value="PRIEST">사제</option>
-		<option value="HUNTER">사냥꾼</option>
-		<option value="PALADIN">성기사</option>
-		<option value="SHAMAN">주술사</option>
-		<option value="DRUID">드루이드</option>
-		<option value="WARLOCK">흑마법사</option>
-		<option value="DEMONHUNTER">악마사냥꾼</option>
-		<option value="NEUTRAL">중립</option>
-	</select>
-
-	<label for="raritySelect">등급 선택: </label>
-	<select id="raritySelect">
-		<option value="ALL">전체</option>
-		<option value="COMMON">일반</option>
-		<option value="RARE">희귀</option>
-		<option value="EPIC">영웅</option>
-		<option value="LEGENDARY">전설</option>
-	</select>
-
-	<label for="slotSelect">덱 슬롯: </label>
-	<select id="slotSelect">
-		<option value="1">슬롯 1</option>
-		<option value="2">슬롯 2</option>
-		<option value="3">슬롯 3</option>
-	</select>
-	<button onclick="saveDeck()">덱 저장</button>
-	<button onclick="loadDeck()">덱 불러오기</button>
+	<div class="filter-group">
+		<input type="text" id="nameInput" placeholder="카드 이름 검색..." />
+		<select id="raritySelect">
+			<option value="ALL">-- 등급 선택 --</option>
+			<option value="COMMON">일반</option>
+			<option value="RARE">희귀</option>
+			<option value="EPIC">영웅</option>
+			<option value="LEGENDARY">전설</option>
+		</select>
+		<select id="costSelect">
+			<option value="ALL">-- 비용 선택 --</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7 이상</option>
+		</select>
+		<select id="typeSelect">
+			<option value="ALL">-- 종류 선택 --</option>
+			<option value="MINION">하수인</option>
+			<option value="SPELL">주문</option>
+			<option value="WEAPON">무기</option>
+			<option value="HERO">영웅</option>
+		</select>
+	</div>
 
 	<div id="mainContainer">
 		<div id="leftPanel">
@@ -170,10 +238,9 @@
 				<button id="nextPage">▶</button>
 			</div>
 		</div>
-
 		<div id="rightPanel">
 			<h2>현재 덱</h2>
-			<div id="deckCount" style="margin-bottom: 10px;">카드 수: 0 / 30</div>
+			<div id="deckCount">카드 수: 0 / 30</div>
 			<ul id="deckList"></ul>
 		</div>
 	</div>
@@ -189,7 +256,7 @@
 		fetch(API_URL)
 			.then(res => res.json())
 			.then(data => {
-				allCards = data.filter(card => (card.type === "MINION" || card.type === "SPELL") && card.cardClass);
+				allCards = data.filter(card => card.cardClass);
 				filterCards();
 			})
 			.catch(err => {
@@ -197,8 +264,10 @@
 				alert("카드 데이터를 불러오는 데 실패했습니다.");
 			});
 
-		document.getElementById('classSelect').addEventListener('change', filterCards);
+		document.getElementById('nameInput').addEventListener('input', filterCards);
 		document.getElementById('raritySelect').addEventListener('change', filterCards);
+		document.getElementById('costSelect').addEventListener('change', filterCards);
+		document.getElementById('typeSelect').addEventListener('change', filterCards);
 		document.getElementById('prevPage').addEventListener('click', () => {
 			if (currentPage > 1) {
 				currentPage--;
@@ -215,12 +284,19 @@
 
 		function filterCards() {
 			currentPage = 1;
-			const selectedClass = document.getElementById('classSelect').value;
+			const nameKeyword = document.getElementById('nameInput').value.trim().toLowerCase();
 			const selectedRarity = document.getElementById('raritySelect').value;
+			const selectedCost = document.getElementById('costSelect').value;
+			const selectedType = document.getElementById('typeSelect').value;
+
 			filteredCards = allCards.filter(c => {
-				const matchesClass = String(c.cardClass).toUpperCase() === selectedClass;
-				const matchesRarity = selectedRarity === "ALL" || c.rarity === selectedRarity;
-				return matchesClass && matchesRarity;
+				const matchName = !nameKeyword || (c.name && c.name.toLowerCase().includes(nameKeyword));
+				const matchRarity = selectedRarity === "ALL" || c.rarity === selectedRarity;
+				const matchType = selectedType === "ALL" ||
+					(selectedType === "HERO" ? c.type === "HERO" && c.set !== "HERO_SKINS" : c.type === selectedType);
+				const matchCost = selectedCost === "ALL" ||
+					(selectedCost === "7" ? (c.cost ?? 0) >= 7 : (c.cost ?? 0) === Number(selectedCost));
+				return matchName && matchRarity && matchType && matchCost;
 			});
 			showCards();
 		}
@@ -275,7 +351,6 @@
 				const count = cardCounts[card.id];
 				const li = document.createElement('li');
 				li.textContent = `${card.name} (비용: ${card.cost ?? 0})${count > 1 ? ` (${count}장)` : ''}`;
-				li.style.cursor = "pointer";
 				li.onclick = () => {
 					const index = deck.findIndex(c => c.id === card.id);
 					if (index !== -1) {
@@ -287,33 +362,7 @@
 				list.appendChild(li);
 			});
 		}
-
-		function getSelectedSlotKey() {
-			const slot = document.getElementById('slotSelect').value;
-			return `savedDeckSlot${slot}`;
-		}
-
-		function saveDeck() {
-			const key = getSelectedSlotKey();
-			localStorage.setItem(key, JSON.stringify(deck));
-			alert(`덱이 슬롯 ${key.replace('savedDeckSlot', '')}에 저장되었습니다.`);
-		}
-
-		function loadDeck() {
-			const key = getSelectedSlotKey();
-			const saved = localStorage.getItem(key);
-			if (saved) {
-				try {
-					deck = JSON.parse(saved);
-					updateDeck();
-					alert(`덱이 슬롯 ${key.replace('savedDeckSlot', '')}에서 불러와졌습니다.`);
-				} catch (e) {
-					alert("덱 불러오기에 실패했습니다.");
-				}
-			} else {
-				alert("해당 슬롯에 저장된 덱이 없습니다.");
-			}
-		}
 	</script>
 </body>
+
 </html>
