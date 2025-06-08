@@ -5,186 +5,7 @@
 	<meta charset="UTF-8" />
 	<title>dolfinder</title>
 	<link rel="icon" type="image/png" href="dolfindericon.png">
-	<style>
-		body {
-			font-family: sans-serif;
-			background-color: #1e1e1e;
-			color: #e0e0e0;
-			margin: 0;
-			padding: 20px;
-			padding-top: 68px;
-		}
-
-		.top-nav {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 48px;
-			background-color: #1c2e2b;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 0 1.5rem;
-			z-index: 1000;
-			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-		}
-
-		.nav-left {
-			display: flex;
-			align-items: center;
-		}
-
-		.nav-left .logo {
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-
-		.logo-img {
-			height: 32px;
-			width: auto;
-			display: block;
-		}
-
-		.logo-text {
-			color: #fff;
-			font-weight: bold;
-			font-size: 1.1rem;
-			line-height: 1;
-		}
-
-		.nav-right {
-			margin-left: auto;
-			display: flex;
-			align-items: center;
-			padding-left: 1rem;
-		}
-
-		.nav-right .nav-link {
-			color: #fff;
-			text-decoration: none;
-			font-weight: 600;
-			padding: 0.4rem 1rem;
-			background-color: #fca311;
-			border-radius: 20px;
-			transition: background 0.2s ease;
-		}
-
-		.nav-right .nav-link:hover {
-			background-color: #ffb733;
-		}
-
-		.filter-group {
-			display: flex;
-			gap: 10px;
-			margin-top: 60px;
-			margin-bottom: 20px;
-		}
-
-		.filter-group input,
-		.filter-group select {
-			background-color: #d1bb92;
-			color: #333;
-			border: 2px solid #b4955a;
-			border-radius: 20px;
-			padding: 8px 14px;
-			font-size: 14px;
-			font-weight: bold;
-			box-shadow: 0 0 0 2px transparent;
-			transition: box-shadow 0.3s ease, background-color 0.2s ease;
-		}
-
-		.filter-group select:focus,
-		.filter-group input:focus {
-			outline: none;
-			box-shadow: 0 0 5px 2px #fcd34d;
-		}
-
-		.filter-group option {
-			background-color: #f0e2c4;
-			color: #000;
-		}
-
-		#mainContainer {
-			display: flex;
-			gap: 20px;
-		}
-
-		#leftPanel {
-			flex: 2;
-		}
-
-		#rightPanel {
-			flex: 1;
-			background: #2b2b2b;
-			border-left: 2px solid #444;
-			padding: 10px;
-			border-radius: 10px;
-		}
-
-		#cardList {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 10px;
-		}
-
-		.card {
-			border: 1px solid #555;
-			padding: 10px;
-			background: #3a3a3a;
-			color: #fff;
-			text-align: center;
-			cursor: pointer;
-			width: 160px;
-			border-radius: 8px;
-		}
-
-		.card:hover {
-			background-color: #505050;
-		}
-
-		img {
-			width: 100%;
-			height: auto;
-			border-radius: 4px;
-		}
-
-		.pagination {
-			text-align: center;
-			margin: 16px 0;
-		}
-
-		.pagination button {
-			margin: 0 10px;
-			font-size: 18px;
-			padding: 6px 12px;
-			cursor: pointer;
-			background-color: #444;
-			color: #fff;
-			border: none;
-			border-radius: 5px;
-		}
-
-		.pagination button:hover {
-			background-color: #666;
-		}
-
-		.page-info {
-			font-size: 16px;
-		}
-
-		#deckList {
-			list-style: none;
-			padding: 0;
-		}
-
-		#deckList li {
-			padding: 6px 0;
-			border-bottom: 1px solid #555;
-			cursor: pointer;
-		}
-	</style>
+	<link rel="stylesheet" href="editor.css" />
 </head>
 
 <body>
@@ -195,41 +16,73 @@
 				<span class="logo-text">DOL Finder</span>
 			</div>
 			<div class="nav-right">
-				<a href="dolfinder.html" class="nav-link">카드 라이브러리</a>
+				<a href="index.html" class="nav-link">카드 라이브러리</a>
 			</div>
 		</div>
 	</nav>
 
+	<!-- 필터 영역 -->
 	<div class="filter-group">
-		<input type="text" id="nameInput" placeholder="카드 이름 검색..." />
-		<select id="raritySelect">
-			<option value="ALL">-- 등급 선택 --</option>
-			<option value="COMMON">일반</option>
-			<option value="RARE">희귀</option>
-			<option value="EPIC">영웅</option>
-			<option value="LEGENDARY">전설</option>
-		</select>
-		<select id="costSelect">
-			<option value="ALL">-- 비용 선택 --</option>
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7 이상</option>
-		</select>
-		<select id="typeSelect">
-			<option value="ALL">-- 종류 선택 --</option>
-			<option value="MINION">하수인</option>
-			<option value="SPELL">주문</option>
-			<option value="WEAPON">무기</option>
-			<option value="HERO">영웅</option>
-		</select>
+		<div class="filter-column">
+			<label for="classSelect">직업</label>
+			<select id="classSelect">
+				<option value="ALL">-- 직업 선택 --</option>
+				<option value="DRUID">드루이드</option>
+				<option value="HUNTER">사냥꾼</option>
+				<option value="MAGE">마법사</option>
+				<option value="PALADIN">성기사</option>
+				<option value="PRIEST">사제</option>
+				<option value="ROGUE">도적</option>
+				<option value="SHAMAN">주술사</option>
+				<option value="WARLOCK">흑마법사</option>
+				<option value="WARRIOR">전사</option>
+				<option value="DEMONHUNTER">악마사냥꾼</option>
+				<option value="NEUTRAL">중립</option>
+			</select>
+		</div>
+		<div class="filter-column">
+			<label for="raritySelect">등급</label>
+			<select id="raritySelect">
+				<option value="ALL">-- 등급 선택 --</option>
+				<option value="COMMON">일반</option>
+				<option value="RARE">희귀</option>
+				<option value="EPIC">영웅</option>
+				<option value="LEGENDARY">전설</option>
+			</select>
+		</div>
+		<div class="filter-column">
+			<label for="costSelect">비용</label>
+			<select id="costSelect">
+				<option value="ALL">-- 비용 선택 --</option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7 이상</option>
+			</select>
+		</div>
+		<div class="filter-column">
+			<label for="typeSelect">종류</label>
+			<select id="typeSelect">
+				<option value="ALL">-- 종류 선택 --</option>
+				<option value="MINION">하수인</option>
+				<option value="SPELL">주문</option>
+				<option value="WEAPON">무기</option>
+				<option value="HERO">영웅</option>
+			</select>
+		</div>
+		<div class="filter-column">
+			<label for="nameInput">카드 이름</label>
+			<input type="text" id="nameInput" placeholder="카드 이름 검색..." />
+		</div>
 	</div>
 
+	<!-- 메인 컨테이너 -->
 	<div id="mainContainer">
+		<!-- 카드 리스트 -->
 		<div id="leftPanel">
 			<div id="cardList"></div>
 			<div class="pagination">
@@ -238,131 +91,29 @@
 				<button id="nextPage">▶</button>
 			</div>
 		</div>
+
 		<div id="rightPanel">
+			<!-- 덱 저장 및 불러오기: 한 줄 UI -->
+			<div class="deck-toolbar">
+				<input type="text" id="deckNameInput" placeholder="덱 이름 입력" />
+				<button id="saveDeckBtn">저장</button>
+				<select id="loadDeckSelect">
+					<option value="">덱 선택</option>
+				</select>
+				<button id="loadDeckBtn">불러오기</button>
+			</div>
+
+			<!-- 덱 상태 -->
 			<h2>현재 덱</h2>
 			<div id="deckCount">카드 수: 0 / 30</div>
+			<div id="deckClass">덱 직업: 없음</div>
 			<ul id="deckList"></ul>
 		</div>
+
+	</div>
 	</div>
 
-	<script>
-		let allCards = [];
-		let filteredCards = [];
-		let deck = [];
-		let currentPage = 1;
-		const cardsPerPage = 10;
-		const API_URL = "https://api.hearthstonejson.com/v1/latest/koKR/cards.collectible.json";
-
-		fetch(API_URL)
-			.then(res => res.json())
-			.then(data => {
-				allCards = data.filter(card => card.cardClass);
-				filterCards();
-			})
-			.catch(err => {
-				console.error("카드 불러오기 실패:", err);
-				alert("카드 데이터를 불러오는 데 실패했습니다.");
-			});
-
-		document.getElementById('nameInput').addEventListener('input', filterCards);
-		document.getElementById('raritySelect').addEventListener('change', filterCards);
-		document.getElementById('costSelect').addEventListener('change', filterCards);
-		document.getElementById('typeSelect').addEventListener('change', filterCards);
-		document.getElementById('prevPage').addEventListener('click', () => {
-			if (currentPage > 1) {
-				currentPage--;
-				showCards();
-			}
-		});
-		document.getElementById('nextPage').addEventListener('click', () => {
-			const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-			if (currentPage < totalPages) {
-				currentPage++;
-				showCards();
-			}
-		});
-
-		function filterCards() {
-			currentPage = 1;
-			const nameKeyword = document.getElementById('nameInput').value.trim().toLowerCase();
-			const selectedRarity = document.getElementById('raritySelect').value;
-			const selectedCost = document.getElementById('costSelect').value;
-			const selectedType = document.getElementById('typeSelect').value;
-
-			filteredCards = allCards.filter(c => {
-				const matchName = !nameKeyword || (c.name && c.name.toLowerCase().includes(nameKeyword));
-				const matchRarity = selectedRarity === "ALL" || c.rarity === selectedRarity;
-				const matchType = selectedType === "ALL" ||
-					(selectedType === "HERO" ? c.type === "HERO" && c.set !== "HERO_SKINS" : c.type === selectedType);
-				const matchCost = selectedCost === "ALL" ||
-					(selectedCost === "7" ? (c.cost ?? 0) >= 7 : (c.cost ?? 0) === Number(selectedCost));
-				return matchName && matchRarity && matchType && matchCost;
-			});
-			showCards();
-		}
-
-		function showCards() {
-			const cardList = document.getElementById('cardList');
-			cardList.innerHTML = '';
-			const start = (currentPage - 1) * cardsPerPage;
-			const end = start + cardsPerPage;
-			const pageCards = filteredCards.slice(start, end);
-			if (pageCards.length === 0) {
-				cardList.innerHTML = `<p>카드가 없습니다.</p>`;
-				return;
-			}
-			pageCards.forEach(card => {
-				const div = document.createElement('div');
-				div.className = 'card';
-				div.innerHTML = `<strong>${card.name}</strong><br><img src="https://art.hearthstonejson.com/v1/render/latest/koKR/256x/${card.id}.png" alt="${card.name}">`;
-				div.onclick = () => addToDeck(card);
-				cardList.appendChild(div);
-			});
-			document.getElementById('pageInfo').textContent = `${currentPage} / ${Math.ceil(filteredCards.length / cardsPerPage)}`;
-		}
-
-		function addToDeck(card) {
-			if (deck.length >= 30) {
-				alert("덱은 최대 30장까지만 추가할 수 있습니다.");
-				return;
-			}
-			const sameCards = deck.filter(c => c.id === card.id);
-			const limit = card.rarity === "LEGENDARY" ? 1 : 2;
-			if (sameCards.length < limit) {
-				deck.push(card);
-				updateDeck();
-			} else {
-				alert(`이 카드는 최대 ${limit}장까지만 추가할 수 있습니다.`);
-			}
-			document.getElementById('deckCount').textContent = `카드 수: ${deck.length} / 30`;
-		}
-
-		function updateDeck() {
-			const list = document.getElementById('deckList');
-			list.innerHTML = '';
-			const cardCounts = {};
-			deck.forEach(card => {
-				cardCounts[card.id] = (cardCounts[card.id] || 0) + 1;
-			});
-			const uniqueCards = Array.from(new Set(deck.map(card => card.id)))
-				.map(id => deck.find(card => card.id === id))
-				.sort((a, b) => (a.cost ?? 0) - (b.cost ?? 0));
-			uniqueCards.forEach(card => {
-				const count = cardCounts[card.id];
-				const li = document.createElement('li');
-				li.textContent = `${card.name} (비용: ${card.cost ?? 0})${count > 1 ? ` (${count}장)` : ''}`;
-				li.onclick = () => {
-					const index = deck.findIndex(c => c.id === card.id);
-					if (index !== -1) {
-						deck.splice(index, 1);
-						updateDeck();
-					}
-					document.getElementById('deckCount').textContent = `카드 수: ${deck.length} / 30`;
-				};
-				list.appendChild(li);
-			});
-		}
-	</script>
+	<script src="editor.js"></script>
 </body>
 
 </html>
