@@ -152,6 +152,7 @@ function updateDeck() {
 	} else {
 		deckClassDisplay.textContent = "덱 직업: 중립만 포함";
 	}
+	updateManaChart(deck);
 }
 
 // 덱 저장 - 여러 개 저장 가능
@@ -226,4 +227,54 @@ function updateDeckListDropdown() {
 			select.appendChild(option);
 		}
 	}
+}
+let manaChart;
+
+function updateManaChart(deck) {
+	const manaCounts = new Array(8).fill(0); // 0~6 + 7이상
+
+	deck.forEach(card => {
+		const cost = Math.min(card.cost ?? 0, 7);
+		manaCounts[cost]++;
+	});
+
+	const ctx = document.getElementById('manaChart').getContext('2d');
+
+	if (manaChart) manaChart.destroy(); // 기존 차트 제거
+
+	manaChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['0', '1', '2', '3', '4', '5', '6', '7+'],
+			datasets: [{
+				label: '카드 수',
+				data: manaCounts,
+				backgroundColor: '#fca311',
+				borderColor: '#b95b00',
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				y: {
+					beginAtZero: true,
+					ticks: {
+						color: '#fff'
+					}
+				},
+				x: {
+					ticks: {
+						color: '#fff'
+					}
+				}
+			},
+			plugins: {
+				legend: {
+					labels: {
+						color: '#fff'
+					}
+				}
+			}
+		}
+	});
 }
