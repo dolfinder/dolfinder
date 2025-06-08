@@ -175,3 +175,26 @@ body {
   border-bottom: 1px solid #555;
   cursor: pointer;
 }
+.analysis-box {
+  background-color: #3a3a3a;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ffe082;
+  white-space: pre-wrap;
+}
+#analyzeBtn {
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  background-color: #8bc34a;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#analyzeBtn:hover {
+  background-color: #aed581;
+}

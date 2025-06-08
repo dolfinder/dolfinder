@@ -16,6 +16,7 @@
 				<img src="dolfindericon.png" alt="DOL Finder 로고" class="logo-img">
 				<span class="logo-text">DOL Finder</span>
 			</div>
+			
 			<div class="nav-right">
 				<a href="index.html" class="nav-link">카드 라이브러리</a>
 			</div>
@@ -27,7 +28,7 @@
 		<div class="filter-column">
 			<label for="classSelect">직업</label>
 			<select id="classSelect">
-				<option value="ALL">-- 직업 선택 --</option>
+				<option value="ALL">전체</option>
 				<option value="DRUID">드루이드</option>
 				<option value="HUNTER">사냥꾼</option>
 				<option value="MAGE">마법사</option>
@@ -44,7 +45,7 @@
 		<div class="filter-column">
 			<label for="raritySelect">등급</label>
 			<select id="raritySelect">
-				<option value="ALL">-- 등급 선택 --</option>
+				<option value="ALL">전체</option>
 				<option value="COMMON">일반</option>
 				<option value="RARE">희귀</option>
 				<option value="EPIC">영웅</option>
@@ -54,7 +55,7 @@
 		<div class="filter-column">
 			<label for="costSelect">비용</label>
 			<select id="costSelect">
-				<option value="ALL">-- 비용 선택 --</option>
+				<option value="ALL">전체</option>
 				<option value="0">0</option>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -68,7 +69,7 @@
 		<div class="filter-column">
 			<label for="typeSelect">종류</label>
 			<select id="typeSelect">
-				<option value="ALL">-- 종류 선택 --</option>
+				<option value="ALL">전체</option>
 				<option value="MINION">하수인</option>
 				<option value="SPELL">주문</option>
 				<option value="WEAPON">무기</option>
@@ -109,6 +110,8 @@
 			<div id="deckCount">카드 수: 0 / 30</div>
 			<div id="deckClass">덱 직업: 없음</div>
 			<ul id="deckList"></ul>
+			<button id="analyzeBtn">덱 평가</button>
+			<div id="analysisResult" class="analysis-box"></div>
 			<h3>덱 통계</h3>
 			<canvas id="manaChart" width="300" height="200"></canvas>
 		</div>
