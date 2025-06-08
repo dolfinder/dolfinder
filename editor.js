@@ -152,6 +152,7 @@ function updateDeck() {
 	} else {
 		deckClassDisplay.textContent = "덱 직업: 중립만 포함";
 	}
+	updateManaChart(deck);
 }
 
 // 덱 저장 - 여러 개 저장 가능
@@ -227,3 +228,128 @@ function updateDeckListDropdown() {
 		}
 	}
 }
+let manaChart;
+
+function updateManaChart(deck) {
+	const manaCounts = new Array(8).fill(0); // 0~6 + 7이상
+
+	deck.forEach(card => {
+		const cost = Math.min(card.cost ?? 0, 7);
+		manaCounts[cost]++;
+	});
+
+	const ctx = document.getElementById('manaChart').getContext('2d');
+
+	if (manaChart) manaChart.destroy(); // 기존 차트 제거
+
+	manaChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['0', '1', '2', '3', '4', '5', '6', '7+'],
+			datasets: [{
+				label: '카드 수',
+				data: manaCounts,
+				backgroundColor: '#fca311',
+				borderColor: '#b95b00',
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				y: {
+					beginAtZero: true,
+					ticks: {
+						color: '#fff'
+					}
+				},
+				x: {
+					ticks: {
+						color: '#fff'
+					}
+				}
+			},
+			plugins: {
+				legend: {
+					labels: {
+						color: '#fff'
+					}
+				}
+			}
+		}
+	});
+}
+function analyzeDeckSimple(deck) {
+	if (deck.length < 30) return "30장을 모두 채울 경우 분석할 수 있습니다다";
+
+	let totalCost = 0;
+	let typeCount = { MINION: 0, SPELL: 0, WEAPON: 0 };
+	let legendaryCount = 0;
+	let low = 0, mid = 0, high = 0;
+
+	deck.forEach(card => {
+		const cost = card.cost ?? 0;
+		totalCost += cost;
+
+		if (typeCount[card.type] !== undefined) typeCount[card.type]++;
+		if (card.rarity === "LEGENDARY") legendaryCount++;
+
+		if (cost <= 2) low++;
+		else if (cost <= 5) mid++;
+		else high++;
+	});
+
+	const avgCost = (totalCost / deck.length).toFixed(1);
+	let analysis = `<strong>평균 마나 비용:</strong> ${avgCost}<br>`;
+	analysis += `<strong>하수인:</strong> ${typeCount.MINION}, <strong>주문:</strong> ${typeCount.SPELL}, <strong>무기:</strong> ${typeCount.WEAPON}<br>`;
+	analysis += `<strong>전설 카드 수:</strong> ${legendaryCount}장<br>`;
+	analysis += `<strong>마나 구간 분포:</strong> 저(0~2): ${low}, 중(3~5): ${mid}, 고(6+): ${high}<br>`;
+
+	// 비용/비율 조언
+	if (avgCost >= 5) analysis += "평균 비용이 높아 후반 지향적입니다.<br>";
+	if (low <= 5) analysis += "저비용 카드가 적어 초반 대응이 약할 수 있습니다.<br>";
+	if (high >= 10) analysis += "고비용 카드가 많아 손패가 무거울 수 있습니다.<br>";
+	if (typeCount.MINION < 10) analysis += "하수인이 적어 필드 장악이 어려울 수 있습니다.<br>";
+	if (legendaryCount >= 5) analysis += "전설 카드가 많습니다.<br>";
+
+	// 카드 종류별 조언
+	if (typeCount.SPELL > typeCount.MINION * 1.5) {
+		analysis += "주문 비중이 높아 콤보/제어 위주의 전략일 가능성이 있습니다.<br>";
+	}
+	if (typeCount.MINION >= 20) {
+		analysis += "하수인이 많아 공격적인 템포 덱으로 구성되어 있습니다.<br>";
+	}
+	if (typeCount.WEAPON >= 3) {
+		analysis += "무기 카드가 많아 전투 기반 전략을 지원합니다.<br>";
+	}
+	if ((typeCount.SPELL + typeCount.WEAPON) <= 4) {
+		analysis += "주문과 무기가 부족해 하수인 외의 대응 수단이 적을 수 있습니다.<br>";
+	}
+
+	// 직업별 분석
+	const nonNeutral = deck.find(c => c.cardClass !== "NEUTRAL");
+	if (nonNeutral) {
+		const job = nonNeutral.cardClass;
+		analysis += `<strong>직업 분석:</strong> ${job}<br>`;
+		const jobTips = {
+			DRUID: "드루이드는 마나 가속과 대형 하수인을 중심으로 전개하는 덱이 많습니다.",
+			HUNTER: "사냥꾼은 빠른 템포와 직접 피해로 상대를 압박하는 덱이 일반적입니다.",
+			MAGE: "마법사는 강력한 주문과 광역기, 콤보 위주의 플레이가 많습니다.",
+			PALADIN: "성기사는 버프와 강한 하수인 기반의 중속 덱이 많습니다.",
+			PRIEST: "사제는 제어와 훔치기 중심의 운영이 특징입니다.",
+			ROGUE: "도적은 콤보와 잠복, 치명적인 한 방 딜을 노리는 덱이 많습니다.",
+			SHAMAN: "주술사는 진화, 토템, 다양한 혼합 전략이 존재합니다.",
+			WARLOCK: "흑마법사는 자해와 카드 뽑기를 활용한 공격적인 덱 구성이 특징입니다.",
+			WARRIOR: "전사는 방어력과 무기 활용, 느린 컨트롤 덱도 자주 사용됩니다.",
+			DEMONHUNTER: "악마사냥꾼은 빠른 전개와 강한 하수인 기반 전투에 강합니다."
+		};
+		if (jobTips[job]) {
+			analysis += jobTips[job] + "<br>";
+		}
+	}
+	analysis += "최근 메타는 어둠의 선물과 연마 키워드를 가진 카드를 활용하는 것이 좋습니다!"
+	return analysis;
+}
+document.getElementById("analyzeBtn").addEventListener("click", () => {
+	const result = analyzeDeckSimple(deck);
+	document.getElementById("analysisResult").innerHTML = result;
+});
